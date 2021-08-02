@@ -27,7 +27,7 @@ async def on_message(message):
         embed = discord.Embed(colour=discord.Colour.blue(), title = "둘리봇이라고 합니다", description="잘 부탁드려요")
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/866815175931985930/00a2b4db95d21fa6.PNG")
         
-        embed.add_field(name="!내정보", value="서버 가입일을 알려줍니다", inline=False)
+        embed.add_field(name="!내정보", value="디스코드 가입일을 알려줍니다", inline=False)
         embed.add_field(name="!청소 <수>", value="수 만큼의 메시지를 삭제합니다", inline=False)
         embed.add_field(name="!타이머 <n초>", value="n초만큼 타이머를 작동합니다", inline=False)
         embed.add_field(name="!채널 <보낼 채널 ID> <보낼 내용>", value="보낼 채널에 메시지가 보내집니다", inline=False)
@@ -38,7 +38,7 @@ async def on_message(message):
         await ch.send(message.content[23:])
 
     if message.content == "!내정보":
-        user = message.author.joined_at
+        user = message.author
         date = datetime.datetime.utcfromtimestamp(((int(user.id) >> 22) + 1420070400000)/ 1000)
         embed = discord.Embed(colour=discord.Colour.blue(), title = f"{user.display_name}님의 정보")
         embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/866815175931985930/00a2b4db95d21fa6.PNG")
