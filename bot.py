@@ -90,9 +90,6 @@ async def on_message(message):
             no -= no+1
         else:
             embed = discord.Embed(colour=discord.Colour.blue(), title = "!투표를 먼저 해주세요")
-            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/866815175931985930/00a2b4db95d21fa6.PNG")
-            embed.add_field(name="찬성", value="{0}표".format(yes), inline=True)
-            embed.add_field(name="반대", value="{0}표".format(no), inline=True)
             await message.channel.send(embed=embed)
 voting = False
 yes = -1
