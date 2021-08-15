@@ -64,7 +64,7 @@ async def on_message(message):
         await message.delete()
         await message.channel.purge(limit=number)
         await message.channel.send(f"{number}개의 메시지 삭제")
-    global yes, no, voting
+    global yes, no, voting, msgid, lit
     if message.content.startswith("!투표"):
         if voting == False:
             voting = True
@@ -72,6 +72,7 @@ async def on_message(message):
             embed = discord.Embed(colour=discord.Colour.blue(), title = "투표", description="{0}".format(vote))
             embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/866815175931985930/00a2b4db95d21fa6.PNG")
             msg = await message.channel.send(embed=embed)
+            msgid = msg.id
             await msg.add_reaction("👍")
             await msg.add_reaction("👎")
         else:
@@ -86,23 +87,39 @@ async def on_message(message):
             embed.add_field(name="찬성", value="{0}표".format(yes), inline=True)
             embed.add_field(name="반대", value="{0}표".format(no), inline=True)
             await message.channel.send(embed=embed)
-            yes -= yes+1
-            no -= no+1
+            yes -= yes
+            no -= no
+            lit = [871296186013843528]
+            print(yes, no, lit)
         else:
             embed = discord.Embed(colour=discord.Colour.blue(), title = "!투표를 먼저 해주세요")
             await message.channel.send(embed=embed)
 voting = False
-yes = -1
-no = -1
+msgid = 0
+yes = 0
+no = 0
+lit = [871296186013843528] 
 @client.event
 async def on_reaction_add(reaction, user):
-    global yes,no
-    if str(reaction.emoji) == "👍":
-        yes += 1
-        print(yes)
-    elif str(reaction.emoji) == "👎": 
-        no += 1
-        print(no)
+    global yes,no,lit,msgid, lit
+    if str(reaction.emoji) == "👍" and reaction.message.id == msgid:
+        id = user.id
+        if lit.count(id) == 1:
+            print("중복")
+        elif lit.count(id) == 0:
+            lit.append(id)
+            print(lit)
+            yes += 1
+            print(yes)      
+    elif str(reaction.emoji) == "👎" and reaction.message.id == msgid: 
+        id = user.id
+        if lit.count(id) == 1:
+            print("중복")
+        elif lit.count(id) == 0:
+            lit.append(id)
+            print(lit)
+            no += 1
+            print(no)
 
 
 
