@@ -31,6 +31,7 @@ async def on_message(message):
         embed.add_field(name="!청소 <수>", value="수 만큼의 메시지를 삭제합니다", inline=False)
         embed.add_field(name="!타이머 <n초>", value="n초만큼 타이머를 작동합니다", inline=False)
         embed.add_field(name="!채널 <보낼 채널 ID> <보낼 내용>", value="보낼 채널에 메시지가 보내집니다", inline=False)
+        embed.add_field(name="!투표 <투표 주제>", value="주제에 대한 표를 집표합니다", inline=False)
         await message.channel.send(embed=embed)
 
     if message.content.startswith(f"!채널"):
@@ -63,6 +64,49 @@ async def on_message(message):
         await message.delete()
         await message.channel.purge(limit=number)
         await message.channel.send(f"{number}개의 메시지 삭제")
+    global yes, no, voting
+    if message.content.startswith("!투표"):
+        if voting == False:
+            voting = True
+            vote = message.content[4:]
+            embed = discord.Embed(colour=discord.Colour.gold(), title = "투표", description="{0}".format(vote))
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/871309410176217108/3.PNG")
+            msg = await message.channel.send(embed=embed)
+            await msg.add_reaction("👍")
+            await msg.add_reaction("👎")
+        else:
+            embed = discord.Embed(colour=discord.Colour.gold(), title = "투표 중", description="개표 후 다시 해주세요")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/871309410176217108/3.PNG")
+            await message.channel.send(embed=embed) 
+    if message.content == "!개표":
+        if voting == True:
+            voting = False
+            embed = discord.Embed(colour=discord.Colour.gold(), title = "투표 결과")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/871309410176217108/3.PNG")
+            embed.add_field(name="찬성", value="{0}표".format(yes), inline=True)
+            embed.add_field(name="반대", value="{0}표".format(no), inline=True)
+            await message.channel.send(embed=embed)
+            yes -= yes+1
+            no -= no+1
+        else:
+            embed = discord.Embed(colour=discord.Colour.gold(), title = "!투표를 먼저 해주세요")
+            embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/866815123586547712/871309410176217108/3.PNG")
+            embed.add_field(name="찬성", value="{0}표".format(yes), inline=True)
+            embed.add_field(name="반대", value="{0}표".format(no), inline=True)
+            await message.channel.send(embed=embed)
+voting = False
+yes = -1
+no = -1
+@client.event
+async def on_reaction_add(reaction, user):
+    global yes,no
+    if str(reaction.emoji) == "👍":
+        yes += 1
+        print(yes)
+    elif str(reaction.emoji) == "👎": 
+        no += 1
+        print(no)
+
 
 
 
