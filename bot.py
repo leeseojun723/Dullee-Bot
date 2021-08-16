@@ -89,7 +89,7 @@ async def on_message(message):
             await message.channel.send(embed=embed)
             yes -= yes
             no -= no
-            lit = [871296186013843528]
+            lit = [866803900921282623]
             print(yes, no, lit)
         else:
             embed = discord.Embed(colour=discord.Colour.blue(), title = "!투표를 먼저 해주세요")
@@ -98,7 +98,7 @@ voting = False
 msgid = 0
 yes = 0
 no = 0
-lit = [871296186013843528] 
+lit = [866803900921282623] 
 @client.event
 async def on_reaction_add(reaction, user):
     global yes,no,lit,msgid, lit
